@@ -3,15 +3,16 @@ import numpy as np
 
 def tokenize(text):
     '''
-    encodes the text by mapping each unique character
-    to an integer and vice-versa
+    returns a tuple of unique chars (tokens) in the text and,
+    an array containing encoded mapping of each char to an integer,
+    as a tuple.
     '''
-    chars = tuple(set(text))
-    int2char = dict(enumerate(chars))
+    tokens = tuple(set(text))
+    int2char = dict(enumerate(tokens))
     char2int = {ch: ii for ii, ch in int2char.items()}
     encoded = np.array([char2int[ch] for ch in text])
 
-    return encoded
+    return tokens, encoded
 
 
 def one_hot_encode(arr):

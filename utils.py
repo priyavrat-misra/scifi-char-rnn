@@ -4,8 +4,7 @@ import numpy as np
 def tokenize(text):
     '''
     returns a tuple of unique chars (tokens) in the text and,
-    an array containing encoded mapping of each char to an integer,
-    as a tuple.
+    an array containing encoded mapping of each char to an integer
     '''
     tokens = tuple(set(text))
     int2char = dict(enumerate(tokens))
@@ -15,11 +14,10 @@ def tokenize(text):
     return tokens, encoded
 
 
-def one_hot_encode(arr):
+def one_hot_encode(arr, n_labels):
     '''
     one-hot encodes a given integer array
     '''
-    n_labels = np.max(arr) + 1
     one_hot = np.zeros((arr.size, n_labels), dtype=np.float32)
     one_hot[np.arange(one_hot.shape[0]), arr.flatten()] = 1.
     one_hot = one_hot.reshape((*arr.shape, n_labels))

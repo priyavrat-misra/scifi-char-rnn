@@ -3,7 +3,7 @@ import torch.nn as nn
 
 
 class CharRNN(nn.Module):
-    def __init__(self, tokens, n_hidden=256, n_layers=2, dropout=0.2):
+    def __init__(self, tokens, n_hidden=512, n_layers=2, dropout=0.5):
         super().__init__()
         self.n_layers = n_layers
         self.n_hidden = n_hidden
@@ -20,10 +20,9 @@ class CharRNN(nn.Module):
 
     def forward(self, x, hidden):
         out, hidden = self.lstm(x, hidden)
-        # only features from the corresponding batch's last network are fed
-        # to the fc layer (as they have information from the previous networks)
-        # although it's possible to feed all of them but it'll use more compute
-        out = self.dropout(out[:, -1, :])
+        out = self.dropout(out)
+        # stack up LSTM outputs
+        out = out.contiguous().view(-1, self.n_hidden)
         out = self.fc(out)
 
         return out, hidden
